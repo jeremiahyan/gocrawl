@@ -7,6 +7,7 @@ import (
 
 	"github.com/jeremiahyan/gocrawl"
 	"github.com/jeremiahyan/goquery"
+	"strings"
 )
 
 type Ext struct {
@@ -15,7 +16,37 @@ type Ext struct {
 
 func (e *Ext) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Document) (interface{}, bool) {
 	html, _ := doc.Html()
-	fmt.Printf("Visit: %s\n %s \n", ctx.URL(), html)
+	urlString := ctx.URL().String()
+	fmt.Printf("Try: %s ", urlString)
+	if !strings.Contains(urlString, "reviews") {
+		fmt.Printf(" Passed...\n")
+		return nil, true;
+	}
+	fmt.Printf("\nVisit: %s\n\n", ctx.URL())
+	arrayLv0 := strings.Split(html, "<a name=\"")
+	for i0, contentLv0 := range arrayLv0 {
+		if i0 > 0 && strings.Contains(contentLv0, "</p>") {
+			arrayLv1 := strings.Split(contentLv0, "</p>")
+			paragraph := arrayLv1[0]
+			fmt.Printf("HTML: %d: \n%s\n", i0, paragraph)
+
+			var miniTitle, title string
+			author := ""
+			miniTitle = strings.Split(paragraph, "\"></a>")[0]
+			fmt.Printf("MiniTitle: %s", miniTitle)
+
+			if strings.Contains(paragraph, "<h4 class=\"text-color-left\">") {
+				author = strings.Split(paragraph, "<h4 class=\"text-color-left\">")[1]
+				author = strings.Split(author, "</h4>")[0]
+			}
+
+			title = strings.Split(paragraph, "<h4>")[1]
+			title = strings.Split(paragraph, "</h4>")[0]
+
+			fmt.Printf("\n======\nMiniTitle: %s\nAuthor: %s\nTitle: %s\n", miniTitle, author, title)
+		}
+	}
+
 	return nil, true
 }
 
