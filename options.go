@@ -3,7 +3,7 @@ package gocrawl
 import (
 	"time"
 
-	"github.com/PuerkitoBio/purell"
+	"github.com/jeremiahyan/purell"
 )
 
 // Default options

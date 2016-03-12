@@ -12,7 +12,7 @@ import (
 
 	"path"
 
-	"github.com/PuerkitoBio/goquery"
+	"github.com/jeremiahyan/goquery"
 	robotstxt "github.com/temoto/robotstxt.go"
 	"golang.org/x/net/html"
 )

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/PuerkitoBio/gocrawl"
-	"github.com/PuerkitoBio/goquery"
+	"github.com/jeremiahyan/gocrawl"
+	"github.com/jeremiahyan/goquery"
 )
 
 type Ext struct {
@@ -14,7 +14,8 @@ type Ext struct {
 }
 
 func (e *Ext) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Document) (interface{}, bool) {
-	fmt.Printf("Visit: %s\n", ctx.URL())
+	html, _ := doc.Html()
+	fmt.Printf("Visit: %s\n %s \n", ctx.URL(), html)
 	return nil, true
 }
 
@@ -22,7 +23,7 @@ func (e *Ext) Filter(ctx *gocrawl.URLContext, isVisited bool) bool {
 	if isVisited {
 		return false
 	}
-	if ctx.URL().Host == "github.com" || ctx.URL().Host == "golang.org" || ctx.URL().Host == "0value.com" {
+	if ctx.URL().Host == "chicklitclub.com" {
 		return true
 	}
 	return false
@@ -38,5 +39,5 @@ func main() {
 	opts.MaxVisits = 100
 
 	c := gocrawl.NewCrawlerWithOptions(opts)
-	c.Run("http://0value.com")
+	c.Run("http://chicklitclub.com")
 }

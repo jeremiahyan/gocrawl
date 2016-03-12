@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/PuerkitoBio/purell"
+	"github.com/jeremiahyan/purell"
 )
 
 const (

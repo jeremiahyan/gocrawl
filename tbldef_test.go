@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PuerkitoBio/goquery"
-	"github.com/PuerkitoBio/purell"
+	"github.com/jeremiahyan/goquery"
+	"github.com/jeremiahyan/purell"
 )
 
 // Type a is a simple syntax helper to create test cases' asserts.

@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PuerkitoBio/goquery"
+	"github.com/jeremiahyan/goquery"
 )
 
 var visitedPage2 = false

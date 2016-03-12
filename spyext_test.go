@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/PuerkitoBio/goquery"
+	"github.com/jeremiahyan/goquery"
 )
 
 // Extension method enum

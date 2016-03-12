@@ -1,8 +1,8 @@
-# gocrawl [![GoDoc](https://godoc.org/github.com/PuerkitoBio/gocrawl?status.png)](http://godoc.org/github.com/PuerkitoBio/gocrawl) [![build status](https://secure.travis-ci.org/PuerkitoBio/gocrawl.png)](http://travis-ci.org/PuerkitoBio/gocrawl)
+# gocrawl [![GoDoc](https://godoc.org/github.com/jeremiahyan/gocrawl?status.png)](http://godoc.org/github.com/jeremiahyan/gocrawl) [![build status](https://secure.travis-ci.org/PuerkitoBio/gocrawl.png)](http://travis-ci.org/PuerkitoBio/gocrawl)
 
 gocrawl is a polite, slim and concurrent web crawler written in Go.
 
-For a simpler yet more flexible web crawler written in a more idiomatic Go style, you may want to take a look at [fetchbot](https://github.com/PuerkitoBio/fetchbot), a package that builds on the experience of gocrawl.
+For a simpler yet more flexible web crawler written in a more idiomatic Go style, you may want to take a look at [fetchbot](https://github.com/jeremiahyan/fetchbot), a package that builds on the experience of gocrawl.
 
 ## Features
 
@@ -23,9 +23,9 @@ gocrawl depends on the following userland libraries:
 
 It requires Go1.1+ because of its indirect dependency on `golang.org/x/net/html`. To install:
 
-`go get github.com/PuerkitoBio/gocrawl`
+`go get github.com/jeremiahyan/gocrawl`
 
-To install a previous version, you have to `git clone https://github.com/PuerkitoBio/gocrawl` into your `$GOPATH/src/github.com/PuerkitoBio/gocrawl/` directory, and then run (for example) `git checkout v0.3.2` to checkout a specific version, and `go install` to build and install the Go package.
+To install a previous version, you have to `git clone https://github.com/jeremiahyan/gocrawl` into your `$GOPATH/src/github.com/jeremiahyan/gocrawl/` directory, and then run (for example) `git checkout v0.3.2` to checkout a specific version, and `go install` to build and install the Go package.
 
 ## Changelog
 
@@ -245,15 +245,15 @@ This channel can be useful to arbitrarily enqueue URLs that would otherwise not 
 The [BSD 3-Clause license][bsd].
 
 [bsd]: http://opensource.org/licenses/BSD-3-Clause
-[goquery]: https://github.com/PuerkitoBio/goquery
+[goquery]: https://github.com/jeremiahyan/goquery
 [robots]: https://github.com/temoto/robotstxt.go
-[purell]: https://github.com/PuerkitoBio/purell
+[purell]: https://github.com/jeremiahyan/purell
 [robprot]: http://www.robotstxt.org/robotstxt.html
 [robspec]: https://developers.google.com/webmasters/control-crawl-index/docs/robots_txt
-[godoc]: http://godoc.org/github.com/PuerkitoBio/gocrawl
-[er]: http://godoc.org/github.com/PuerkitoBio/gocrawl#EndReason
-[ce]: http://godoc.org/github.com/PuerkitoBio/gocrawl#CrawlError
+[godoc]: http://godoc.org/github.com/jeremiahyan/gocrawl
+[er]: http://godoc.org/github.com/jeremiahyan/gocrawl#EndReason
+[ce]: http://godoc.org/github.com/jeremiahyan/gocrawl#CrawlError
 [gotalk]: http://talks.golang.org/2012/chat.slide#33
-[i10]: https://github.com/PuerkitoBio/gocrawl/issues/10
-[i9]: https://github.com/PuerkitoBio/gocrawl/issues/9
-[i14]: https://github.com/PuerkitoBio/gocrawl/issues/14
+[i10]: https://github.com/jeremiahyan/gocrawl/issues/10
+[i9]: https://github.com/jeremiahyan/gocrawl/issues/9
+[i14]: https://github.com/jeremiahyan/gocrawl/issues/14
