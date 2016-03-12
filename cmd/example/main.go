@@ -33,15 +33,19 @@ func (e *Ext) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Do
 			var miniTitle, title string
 			author := ""
 			miniTitle = strings.Split(paragraph, "\"></a>")[0]
-			fmt.Printf("MiniTitle: %s", miniTitle)
 
 			if strings.Contains(paragraph, "<h4 class=\"text-color-left\">") {
 				author = strings.Split(paragraph, "<h4 class=\"text-color-left\">")[1]
 				author = strings.Split(author, "</h4>")[0]
 			}
 
-			title = strings.Split(paragraph, "<h4>")[1]
-			title = strings.Split(paragraph, "</h4>")[0]
+			if strings.Contains(paragraph, "<h4>") {
+				title = strings.Split(paragraph, "<h4>")[1]
+				title = strings.Split(title, "</h4>")[0]
+			} else if strings.Contains(paragraph, "<h3>") {
+				title = strings.Split(paragraph, "<h3>")[1]
+				title = strings.Split(title, "</h3>")[0]
+			}
 
 			fmt.Printf("\n======\nMiniTitle: %s\nAuthor: %s\nTitle: %s\n", miniTitle, author, title)
 		}
