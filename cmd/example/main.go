@@ -28,13 +28,13 @@ func (e *Ext) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Do
 	}
 	fmt.Printf("\nVisit: %s\n\n", ctx.URL())
 
-	prefixH2Author := "<h2 class=\"impact\">"
+	//prefixH2Author := "<h2 class=\"impact\">"
 	prefixH3 := "<h3>"
 	prefixH4 := "<h4>"
-	prefixH4Author := "<h4 class=\"text-color-left\">"
+	//prefixH4Author := "<h4 class=\"text-color-left\">"
 	prefixP := "<p>"
 
-	suffixH2 := "</h2>"
+	//suffixH2 := "</h2>"
 	suffixH3 := "</h3>"
 	suffixH4 := "</h4>"
 	suffixP := "</p>"
@@ -45,11 +45,15 @@ func (e *Ext) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Do
 	arrayLv0 := strings.Split(html, "<a name=\"")
 	for i0, contentLv0 := range arrayLv0 {
 		if i0 > 0 {
+			//if !strings.Contains(contentLv0, suffixP) {
+			//	if strings.Contains(contentLv0, prefixH2Author) {
+			//		author = strings.Split(contentLv0, prefixH2Author)[1]
+			//		author = strings.Split(author, suffixH2)[0]
+			//	}
+			//	continue
+			//}
+
 			if !strings.Contains(contentLv0, suffixP) {
-				if strings.Contains(contentLv0, prefixH2Author) {
-					author = strings.Split(contentLv0, prefixH2Author)[1]
-					author = strings.Split(author, suffixH2)[0]
-				}
 				continue
 			}
 
@@ -59,15 +63,18 @@ func (e *Ext) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Do
 
 			miniTitle = strings.Split(paragraph, "\"></a>")[0]
 
-			if strings.Contains(paragraph, prefixH4Author) {
-				author = strings.Split(paragraph, prefixH4Author)[1]
-				author = strings.Split(author, suffixH4)[0]
-			}
+			//if strings.Contains(paragraph, prefixH4Author) {
+			//	author = strings.Split(paragraph, prefixH4Author)[1]
+			//	author = strings.Split(author, suffixH4)[0]
+			//}
 
-			if author == "" {
-				author = strings.Split(ctx.URL().String(), "http://www.chicklitclub.com/")[1]
-				author = strings.Split(author, "-")[0]
-			}
+			//if author == "" {
+			//	author = strings.Split(ctx.URL().String(), "http://www.chicklitclub.com/")[1]
+			//	author = strings.Split(author, "-")[0]
+			//}
+
+			author = strings.Split(ctx.URL().String(), "http://www.chicklitclub.com/")[1]
+			author = strings.Split(author, "-")[0]
 
 			if strings.Contains(paragraph, prefixH4) {
 				title = strings.Split(paragraph, prefixH4)[1]
@@ -82,11 +89,17 @@ func (e *Ext) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Do
 				summary = strings.Split(summary, suffixP)[0]
 			}
 
+			yearReg := regexp.MustCompile("[0-9]{4}")
+
 			if strings.Contains(title, "(") && strings.Contains(title, ")") {
 				//aYear := strings.Split(title, "(")[1]
 				//aYear = strings.Split(aYear, ")")[0]
-				reg := regexp.MustCompile(".*[0-9]{4}.*")
-				yearT = reg.FindString(title)
+				//reg := regexp.MustCompile(".*[0-9]{4}.*")
+				yearT = yearReg.FindString(title)
+			}
+
+			if yearT == "" {
+				yearT = yearReg.FindString(summary)
 			}
 
 			rowNum++
@@ -107,7 +120,17 @@ func (e *Ext) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Do
 			summaryCell.Value = summary
 			URLCell.Value = ctx.URL().String()
 
-			fmt.Printf("\n======\nMiniTitle: %s\nAuthor: %s\nTitle: %s\nYear: %s\n", miniTitle, author, title, yearT)
+			authorMap[author] = authorMap[author] + 1
+			yearMap[yearT] = yearMap[yearT] + 1
+
+			//if val, isExist := yearM[yearT]; isExist {
+			//	yearM[yearT] = val + 1
+			//} else {
+			//	fmt.Println("\n --------------------- \n VAL: %d", yearM[yearT])
+			//	yearM[yearT] = 1
+			//}
+
+			fmt.Printf("\n======\nMiniTitle: %s\nAuthor: %s\nTitle: %s\nYear: %s\n\n", miniTitle, author, title, yearT)
 
 			author = ""
 			title = ""
@@ -159,7 +182,60 @@ func createXLSX()  {
 	URLCell.Value = "URL"
 }
 
-func saveXLSX()  {
+func writeXLSXResult() {
+	xlsxSheet.AddRow()
+	xlsxSheet.AddRow()
+	headerRow := xlsxSheet.AddRow()
+	headerRow.AddCell()
+	headerCellAuthor := headerRow.AddCell()
+	headerRow.AddCell()
+	headerRow.AddCell()
+	headerCellYear := headerRow.AddCell()
+
+	headerCellAuthor.Value = "Author"
+	headerCellYear.Value = "Year"
+
+	rowsArray := make([]*xlsx.Row, 0)
+
+	//Add Author Count
+	for author, count := range authorMap {
+		bodyRow := xlsxSheet.AddRow()
+		bodyRow.AddCell()
+		authorCell := bodyRow.AddCell()
+		authorCountCell := bodyRow.AddCell()
+
+		authorCell.Value = author
+		authorCountCell.Value = fmt.Sprintf("%d", count)
+
+		rowsArray = append(rowsArray, bodyRow)
+	}
+
+	rowIdx := 0
+	for key, val := range yearMap {
+		var bodyRow *xlsx.Row
+		if rowIdx < len(rowsArray) {
+			bodyRow = rowsArray[rowIdx]
+		} else {
+			bodyRow := xlsxSheet.AddRow()
+			bodyRow.AddCell()
+			bodyRow.AddCell()
+			bodyRow.AddCell()
+		}
+
+		bodyRow.AddCell()
+		yearCell := bodyRow.AddCell()
+		yearCountCell := bodyRow.AddCell()
+
+		yearCell.Value = key
+		yearCountCell.Value = fmt.Sprintf("%d", val)
+
+		rowIdx++
+	}
+
+	saveXLSX()
+}
+
+func saveXLSX() {
 	err = xlsxFile.Save("CrawlResult.xlsx")
 	if err != nil {
 		fmt.Printf(err.Error())
@@ -169,6 +245,9 @@ func saveXLSX()  {
 var xlsxFile *xlsx.File
 var xlsxSheet *xlsx.Sheet
 var rowNum = 0
+
+var yearMap = make(map[string]int32)
+var authorMap = make(map[string]int32)
 
 var triesCount = 0
 var err error
@@ -187,5 +266,5 @@ func main() {
 	c := gocrawl.NewCrawlerWithOptions(opts)
 	c.Run("http://www.chicklitclub.com")
 
-	saveXLSX()
+	writeXLSXResult()
 }
