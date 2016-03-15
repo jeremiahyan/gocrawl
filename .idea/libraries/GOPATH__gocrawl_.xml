@@ -28,6 +28,7 @@
       <root url="file://$PROJECT_DIR$/../../IdeaProjects/zionchina-wechat-server/.git" />
       <root url="file://$PROJECT_DIR$/../../IdeaProjects/zionchina-wechat-server/.idea" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/go/callgraph/rta/testdata" />
+      <root url="file://$PROJECT_DIR$/../goxlsx/.git" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/go/types/testdata" />
       <root url="file://$PROJECT_DIR$/../purell/.git" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/http2/testdata" />
